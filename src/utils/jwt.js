@@ -1,7 +1,14 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_key';
-const JWT_EXPIRES_IN = '1d';
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET is required in environment variables');
+}
+if (!JWT_EXPIRES_IN) {
+  throw new Error('JWT_EXPIRES_IN is required in environment variables');
+}
 
 /**
  * Generate JWT token

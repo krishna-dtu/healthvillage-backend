@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import Joi from 'joi';
 import mongoose from 'mongoose';
 
 // Resolve __dirname (ES modules)
@@ -15,8 +16,30 @@ const __dirname = path.dirname(__filename);
 // Absolute path to backend/.env
 const envPath = path.join(__dirname, '..', '.env');
 
+
 // Load environment variables
 dotenv.config({ path: envPath });
+
+// Strict environment validation
+const envSchema = Joi.object({
+  DB_USER: Joi.string().required(),
+  DB_PASSWORD: Joi.string().required(),
+  DB_NAME: Joi.string().required(),
+  MONGO_URI: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
+  FRONTEND_URL: Joi.string().uri().required(),
+  NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
+  RATE_LIMIT_WINDOW: Joi.number().integer().min(1).required(),
+  RATE_LIMIT_MAX: Joi.number().integer().min(1).required(),
+  JWT_EXPIRES_IN: Joi.string().required(),
+}).unknown();
+
+const { error: envError } = envSchema.validate(process.env);
+if (envError) {
+  // eslint-disable-next-line no-console
+  console.error('❌ Invalid environment configuration:', envError.message);
+  process.exit(1);
+}
 
 import express from 'express';
 import cors from 'cors';
@@ -43,21 +66,25 @@ if (process.env.NODE_ENV === 'production') {
 // Security middleware
 app.use(helmet()); // Set security headers
 
-// CORS configuration - lock down to specific origins
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://localhost:8080',
-  'http://localhost:8081',
-  'http://localhost:8082',
-  process.env.FRONTEND_URL,
-].filter(Boolean);
+// CORS configuration - strict in production
+let allowedOrigins;
+if (process.env.NODE_ENV === 'production') {
+  allowedOrigins = [process.env.FRONTEND_URL].filter(Boolean);
+} else {
+  allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'http://localhost:8081',
+    'http://localhost:8082',
+    process.env.FRONTEND_URL,
+  ].filter(Boolean);
+}
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
-    
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {

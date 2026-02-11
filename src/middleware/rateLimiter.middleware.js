@@ -1,12 +1,15 @@
+
 import rateLimit from 'express-rate-limit';
+
+const windowMs = (parseInt(process.env.RATE_LIMIT_WINDOW, 10) || 15) * 60 * 1000;
+const max = parseInt(process.env.RATE_LIMIT_MAX, 10) || 100;
 
 /**
  * Rate limiter for authentication endpoints
  * Prevents brute force attacks
  */
-export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 requests per window
+  windowMs,
+  max,
   message: {
     error: 'Too many authentication attempts',
     message: 'Please try again after 15 minutes',
@@ -26,9 +29,8 @@ export const authLimiter = rateLimit({
  * Rate limiter for password reset endpoints
  * Prevents abuse of password reset functionality
  */
-export const passwordResetLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // 3 requests per hour
+  windowMs: 60 * 60 * 1000, // 1 hour (can be made configurable if needed)
+  max: 3, // 3 requests per hour (can be made configurable if needed)
   message: {
     error: 'Too many password reset attempts',
     message: 'Please try again after 1 hour',
@@ -69,9 +71,8 @@ export const appointmentLimiter = rateLimit({
  * General API rate limiter
  * Prevents API abuse
  */
-export const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per window
+  windowMs,
+  max,
   message: {
     error: 'Too many requests',
     message: 'Please try again later',
