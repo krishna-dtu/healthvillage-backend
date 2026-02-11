@@ -1,3 +1,7 @@
+// Root route for health check or API status
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'HealthVillage API is running' });
+});
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
