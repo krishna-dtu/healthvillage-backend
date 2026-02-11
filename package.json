@@ -1,0 +1,40 @@
+{
+  "name": "healthvillage-backend",
+  "version": "1.0.0",
+  "description": "Backend API for HealthVillage - Rural Telemedicine Platform",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "seed:doctors": "node scripts/seed-doctors.js",
+    "verify:db": "node scripts/verify-database.js"
+  },
+  "keywords": [
+    "telemedicine",
+    "healthcare",
+    "civorax",
+    "express",
+    "backend"
+  ],
+  "author": "Krishna Joshi",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.5",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.16.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.8"
+  }
+}

@@ -1,0 +1,54 @@
+# Node.js
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore database dumps
+*.sql
+*.sqlite
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore other sensitive files
+*.pem
+*.key
+*.crt
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+# Ignore backups
+*.bak
+
+# Ignore static cache
+.cache/
+
+# Ignore public uploads
+public/uploads/
