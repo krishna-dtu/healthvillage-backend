@@ -5,9 +5,8 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "install": "npm ci",
     "build": "echo 'No build step required for backend'",
-    "start": "NODE_ENV=production node src/server.js",
+    "start": "node src/server.js",
     "dev": "NODE_ENV=development node src/server.js",
     "seed:doctors": "node scripts/seed-doctors.js",
     "verify:db": "node scripts/verify-database.js"
